@@ -2,6 +2,7 @@ package ru.practicum.event.mapper;
 
 import org.apache.avro.specific.SpecificRecordBase;
 import ru.practicum.event.model.hub.*;
+import ru.yandex.practicum.kafka.telemetry.event.*;
 
 public class HubEventMapper {
 
