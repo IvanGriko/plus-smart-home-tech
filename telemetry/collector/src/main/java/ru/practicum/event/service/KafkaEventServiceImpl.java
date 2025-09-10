@@ -6,11 +6,11 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
+import ru.practicum.event.model.hub.HubEvent;
+import ru.practicum.event.model.sensor.SensorEvent;
 import ru.practicum.config.KafkaConfig;
 import ru.practicum.event.mapper.HubEventMapper;
 import ru.practicum.event.mapper.SensorEventMapper;
-import ru.practicum.event.model.hub.HubEvent;
-import ru.practicum.event.model.sensor.SensorEvent;
 
 @Service
 @RequiredArgsConstructor

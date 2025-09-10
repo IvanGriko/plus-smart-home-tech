@@ -12,7 +12,6 @@ public class HubEventMapper {
                 .setTimestamp(hubEvent.getTimestamp())
                 .setPayload(toHubEventPayloadAvro(hubEvent))
                 .build();
-
     }
 
     public static SpecificRecordBase toHubEventPayloadAvro(HubEvent hubEvent) {
