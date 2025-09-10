@@ -6,7 +6,7 @@ import ru.yandex.practicum.kafka.telemetry.event.*;
 
 public class SensorEventMapper {
 
-    public static SensorEventAvro toSensorEventAvro(SensorEvent sensorEvent) {
+    public static SpecificRecordBase toSensorEventAvro(SensorEvent sensorEvent) {
         return SensorEventAvro.newBuilder()
                 .setId(sensorEvent.getId())
                 .setHubId(sensorEvent.getHubId())

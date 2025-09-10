@@ -6,7 +6,7 @@ import ru.yandex.practicum.kafka.telemetry.event.*;
 
 public class HubEventMapper {
 
-    public static HubEventAvro toHubEventAvro(HubEvent hubEvent) {
+    public static SpecificRecordBase toHubEventAvro(HubEvent hubEvent) {
         return HubEventAvro.newBuilder()
                 .setHubId(hubEvent.getHubId())
                 .setTimestamp(hubEvent.getTimestamp())
