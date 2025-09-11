@@ -20,7 +20,7 @@ public class ScenarioCondition {
 
     ConditionType conditionType;
 
-    @NotNull
+
     ConditionOperation conditionOperation;
 
     @NotNull
