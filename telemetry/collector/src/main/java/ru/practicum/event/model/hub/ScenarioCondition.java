@@ -17,7 +17,7 @@ public class ScenarioCondition {
     @NotBlank
     String sensorId;
 
-//    @NotNull
+
     ConditionType conditionType;
 
     @NotNull
