@@ -98,22 +98,10 @@ public class HubEventMapper {
     }
 
     public static ScenarioConditionAvro toScenarioConditionAvro(ScenarioCondition scenarioCondition) {
-        if (scenarioCondition == null) {
-            throw new IllegalArgumentException("scenarioCondition cannot be null");
-        }
-
-        ConditionType conditionTypeAvro = Optional.ofNullable(scenarioCondition.getConditionType())
-                .map(HubEventMapper::toConditionTypeAvro)
-                .orElse(null);
-
-        ConditionOperation conditionOperationAvro = Optional.ofNullable(scenarioCondition.getConditionOperation())
-                .map(HubEventMapper::toConditionOperationAvro)
-                .orElse(null);
-
         return ScenarioConditionAvro.newBuilder()
                 .setSensorId(scenarioCondition.getSensorId())
-                .setType(conditionTypeAvro)
-                .setOperation(conditionOperationAvro)
+                .setType(toConditionTypeAvro(scenarioCondition.getConditionType()))
+                .setOperation(toConditionOperationAvro(scenarioCondition.getConditionOperation()))
                 .setValue(scenarioCondition.getValue())
                 .build();
     }
