@@ -102,11 +102,11 @@ public class HubEventMapper {
             throw new IllegalArgumentException("scenarioCondition cannot be null");
         }
 
-        String conditionTypeAvro = Optional.ofNullable(scenarioCondition.getConditionType())
+        ConditionType conditionTypeAvro = Optional.ofNullable(scenarioCondition.getConditionType())
                 .map(HubEventMapper::toConditionTypeAvro)
                 .orElse(null);
 
-        String conditionOperationAvro = Optional.ofNullable(scenarioCondition.getConditionOperation())
+        ConditionOperation conditionOperationAvro = Optional.ofNullable(scenarioCondition.getConditionOperation())
                 .map(HubEventMapper::toConditionOperationAvro)
                 .orElse(null);
 
