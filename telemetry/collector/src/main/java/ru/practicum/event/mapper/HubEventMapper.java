@@ -4,6 +4,10 @@ import org.apache.avro.specific.SpecificRecordBase;
 import ru.practicum.event.model.hub.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 public class HubEventMapper {
 
     public static SpecificRecordBase toHubEventAvro(HubEvent hubEvent) {
@@ -33,15 +37,27 @@ public class HubEventMapper {
 
             case SCENARIO_ADDED -> {
                 ScenarioAddedEvent event = (ScenarioAddedEvent) hubEvent;
+                String name = Optional.ofNullable(event.getName())
+                        .orElseThrow(() -> new IllegalArgumentException("Name cannot be null"));
+
+                List<DeviceAction> actions = Optional.ofNullable(event.getActions())
+                        .orElse(Collections.emptyList());
+
+                List<ScenarioCondition> conditions = Optional.ofNullable(event.getConditions())
+                        .orElse(Collections.emptyList());
                 return ScenarioAddedEventAvro.newBuilder()
-                        .setName(event.getName())
-                        .setActions(event.getActions()
-                                .stream()
+                        .setName(name)
+                        .setActions(actions.stream()
                                 .map(HubEventMapper::toDeviceActionAvro)
                                 .toList())
-                        .setConditions(event.getConditions()
-                                .stream()
-                                .map(HubEventMapper::toScenarioConditionAvro)
+                        .setConditions(conditions.stream()
+                                .map(condition -> {
+                                    ScenarioConditionAvro avroCondition = HubEventMapper.toScenarioConditionAvro(condition);
+                                    if (avroCondition == null) {
+                                        throw new IllegalArgumentException("toScenarioConditionAvro returned null");
+                                    }
+                                    return avroCondition;
+                                })
                                 .toList())
                         .build();
             }
