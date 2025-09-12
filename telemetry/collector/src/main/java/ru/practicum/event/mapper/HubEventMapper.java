@@ -39,7 +39,6 @@ public class HubEventMapper {
                 ScenarioAddedEvent event = (ScenarioAddedEvent) hubEvent;
                 String name = Optional.ofNullable(event.getName())
                         .orElseThrow(() -> new IllegalArgumentException("Name cannot be null"));
-
                 List<DeviceAction> actions = Optional.ofNullable(event.getActions())
                         .orElse(Collections.emptyList());
 
