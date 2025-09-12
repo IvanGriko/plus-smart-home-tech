@@ -43,8 +43,8 @@ protocol HubEventProtocol {
 
     record ScenarioConditionAvro {
         string sensor_id;
-        union {null, ConditionTypeAvro} type;
-        union {null, ConditionOperationAvro} operation;
+        ConditionTypeAvro? type;
+        ConditionOperationAvro? operation;
         union {null, boolean, int} value;
     }
 
