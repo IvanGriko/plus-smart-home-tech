@@ -4,10 +4,6 @@ import org.apache.avro.specific.SpecificRecordBase;
 import ru.practicum.event.model.hub.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 public class HubEventMapper {
 
     public static SpecificRecordBase toHubEventAvro(HubEvent hubEvent) {
