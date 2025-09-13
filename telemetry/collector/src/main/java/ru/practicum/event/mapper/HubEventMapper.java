@@ -89,6 +89,9 @@ public class HubEventMapper {
     }
 
     public static ConditionTypeAvro toConditionTypeAvro(ConditionType conditionType) {
+        if (conditionType == null) {
+            return null;
+        }
         return ConditionTypeAvro.valueOf(conditionType.name());
     }
 
@@ -99,8 +102,8 @@ public class HubEventMapper {
     public static ScenarioConditionAvro toScenarioConditionAvro(ScenarioCondition scenarioCondition) {
         return ScenarioConditionAvro.newBuilder()
                 .setSensorId(scenarioCondition.getSensorId())
-                .setType(toConditionTypeAvro(scenarioCondition.getConditionType()))
-                .setOperation(toConditionOperationAvro(scenarioCondition.getConditionOperation()))
+                .setType(scenarioCondition.getConditionType() != null ? toConditionTypeAvro(scenarioCondition.getConditionType()) : null)
+                .setOperation(scenarioCondition.getConditionOperation() != null ? toConditionOperationAvro(scenarioCondition.getConditionOperation()) : null)
                 .setValue(scenarioCondition.getValue())
                 .build();
     }
