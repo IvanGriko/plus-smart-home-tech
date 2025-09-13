@@ -37,26 +37,15 @@ public class HubEventMapper {
 
             case SCENARIO_ADDED -> {
                 ScenarioAddedEvent event = (ScenarioAddedEvent) hubEvent;
-                String name = Optional.ofNullable(event.getName())
-                        .orElseThrow(() -> new IllegalArgumentException("Name cannot be null"));
-                List<DeviceAction> actions = Optional.ofNullable(event.getActions())
-                        .orElse(Collections.emptyList());
-
-                List<ScenarioCondition> conditions = Optional.ofNullable(event.getConditions())
-                        .orElse(Collections.emptyList());
                 return ScenarioAddedEventAvro.newBuilder()
-                        .setName(name)
-                        .setActions(actions.stream()
+                        .setName(event.getName())
+                        .setActions(event.getActions()
+                                .stream()
                                 .map(HubEventMapper::toDeviceActionAvro)
                                 .toList())
-                        .setConditions(conditions.stream()
-                                .map(condition -> {
-                                    ScenarioConditionAvro avroCondition = HubEventMapper.toScenarioConditionAvro(condition);
-                                    if (avroCondition == null) {
-                                        throw new IllegalArgumentException("toScenarioConditionAvro returned null");
-                                    }
-                                    return avroCondition;
-                                })
+                        .setConditions(event.getConditions()
+                                .stream()
+                                .map(HubEventMapper::toScenarioConditionAvro)
                                 .toList())
                         .build();
             }
