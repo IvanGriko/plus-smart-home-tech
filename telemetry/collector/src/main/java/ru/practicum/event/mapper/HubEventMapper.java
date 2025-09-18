@@ -77,7 +77,11 @@ public class HubEventMapper {
         if (conditionType == null) {
             return null;
         }
-        return ConditionTypeAvro.valueOf(conditionType.name());
+        try {
+            return ConditionTypeAvro.valueOf(conditionType.name());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     public static ConditionOperationAvro toConditionOperationAvro(ConditionOperation conditionOperation) {
