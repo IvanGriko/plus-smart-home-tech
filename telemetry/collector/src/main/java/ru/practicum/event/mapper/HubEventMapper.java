@@ -62,6 +62,9 @@ public class HubEventMapper {
     }
 
     public static DeviceActionAvro toDeviceActionAvro(DeviceAction deviceAction) {
+        if (deviceAction.getType() == null) {
+            throw new IllegalArgumentException("Device action type cannot be null");
+        }
         return DeviceActionAvro.newBuilder()
                 .setSensorId(deviceAction.getSensorId())
                 .setType(toActionTypeAvro(deviceAction.getType()))
@@ -85,7 +88,14 @@ public class HubEventMapper {
     }
 
     public static ConditionOperationAvro toConditionOperationAvro(ConditionOperation conditionOperation) {
-        return ConditionOperationAvro.valueOf(conditionOperation.name());
+        if (conditionOperation == null) {
+            throw new IllegalArgumentException("Condition operation cannot be null");
+        }
+        try {
+            return ConditionOperationAvro.valueOf(conditionOperation.name());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unknown condition operation: " + conditionOperation, e);
+        }
     }
 
     public static ScenarioConditionAvro toScenarioConditionAvro(ScenarioCondition scenarioCondition) {
