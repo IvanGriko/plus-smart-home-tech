@@ -1,12 +1,10 @@
 package ru.yandex.practicum.telemetry.collector.models;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Setter
+@Data
 @ToString(callSuper = true)
 public class DeviceRemovedEvent extends HubEvent {
     @NotBlank

@@ -1,16 +1,14 @@
 package ru.yandex.practicum.telemetry.collector.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
-@ToString
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ScenarioCondition {
-    private String sensorId;
-    private ScenarioType type;
-    private ScenarioOperation operation;
-    private int value;
+    String sensorId;
+    ScenarioType type;
+    ScenarioOperation operation;
+    int value;
 }
 

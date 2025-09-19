@@ -1,11 +1,9 @@
 package ru.yandex.practicum.telemetry.collector.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
-@Setter
+@Data
 @ToString(callSuper = true)
 public class SwitchSensorEvent extends SensorEvent {
     private boolean state;

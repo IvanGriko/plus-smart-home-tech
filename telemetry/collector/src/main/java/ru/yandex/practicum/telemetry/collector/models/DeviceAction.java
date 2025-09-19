@@ -1,14 +1,12 @@
 package ru.yandex.practicum.telemetry.collector.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
-@ToString
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class DeviceAction {
-    private String sensorId;
-    private DeviceActionType type;
-    private int value;
+    String sensorId;
+    DeviceActionType type;
+    int value;
 }

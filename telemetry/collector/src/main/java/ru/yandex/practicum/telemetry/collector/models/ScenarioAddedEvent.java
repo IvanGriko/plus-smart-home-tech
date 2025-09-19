@@ -2,24 +2,22 @@ package ru.yandex.practicum.telemetry.collector.models;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @ToString(callSuper = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ScenarioAddedEvent extends HubEvent {
     @NotEmpty
     @Size(min = 3)
-    private String name;
+    String name;
     @NotEmpty
-    private List<ScenarioCondition> conditions;
+    List<ScenarioCondition> conditions;
     @NotEmpty
-    private List<DeviceAction> actions;
-
+    List<DeviceAction> actions;
 
     @Override
     public HubEventType getType() {

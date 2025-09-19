@@ -135,7 +135,6 @@ public class EventsServiceImp implements EventsService {
                 .build();
     }
 
-
     private DeviceActionAvro map(DeviceAction action) {
         return DeviceActionAvro.newBuilder()
                 .setType(ActionTypeAvro.valueOf(action.getType().name()))

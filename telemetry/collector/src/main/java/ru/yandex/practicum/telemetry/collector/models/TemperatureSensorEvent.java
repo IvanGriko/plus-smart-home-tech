@@ -1,15 +1,16 @@
 package ru.yandex.practicum.telemetry.collector.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
 @ToString(callSuper = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TemperatureSensorEvent extends SensorEvent {
-    private int temperatureC;
-    private int temperatureF;
+    int temperatureC;
+    int temperatureF;
 
     @Override
     public SensorEventType getType() {

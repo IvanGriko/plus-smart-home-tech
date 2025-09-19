@@ -2,18 +2,19 @@ package ru.yandex.practicum.telemetry.collector.models;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
 @ToString(callSuper = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class DeviceAddedEvent extends HubEvent {
     @NotBlank
-    private String id;
+    String id;
     @NotNull
-    private DeviceType deviceType;
+    DeviceType deviceType;
 
     @Override
     public HubEventType getType() {
