@@ -1,6 +1,8 @@
 package ru.yandex.practicum.processor;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -24,14 +26,14 @@ import java.util.Properties;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SnapshotProcessor {
-    private static final List<String> TOPICS = List.of("telemetry.snapshots.v1");
-    private static final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
-    private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(1000);
+    static List<String> TOPICS = List.of("telemetry.snapshots.v1");
+    static Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+    static Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(1000);
 
-    private final KafkaConsumer<String, SensorsSnapshotAvro> consumer= new KafkaConsumer<>(getConsumerProperties());
-    private final SnapshotHandler handler;
-
+    KafkaConsumer<String, SensorsSnapshotAvro> consumer= new KafkaConsumer<>(getConsumerProperties());
+    SnapshotHandler handler;
 
     public void start() {
         try {

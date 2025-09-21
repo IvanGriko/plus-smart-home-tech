@@ -1,7 +1,9 @@
 package ru.yandex.practicum.handler;
 
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceActionAvro;
@@ -33,11 +35,12 @@ import java.util.stream.Collectors;
 @Component
 @Transactional
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HubEventHandler {
-    private final SensorRepository sensorRepository;
-    private final ScenarioRepository scenarioRepository;
-    private final ConditionRepository conditionRepository;
-    private final ActionRepository actionRepository;
+    SensorRepository sensorRepository;
+    ScenarioRepository scenarioRepository;
+    ConditionRepository conditionRepository;
+    ActionRepository actionRepository;
 
     public void handle(HubEventAvro event) {
         Object payload = event.getPayload();

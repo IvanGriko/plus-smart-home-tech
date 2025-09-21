@@ -9,14 +9,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 @Entity
-@Getter
-@Setter
-@ToString
+@Data
 @Table(name = "conditions")
 @SecondaryTable(name = "scenario_conditions", pkJoinColumns = @PrimaryKeyJoinColumn(name = "condition_id"))
 public class Condition {

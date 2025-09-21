@@ -1,6 +1,8 @@
 package ru.yandex.practicum.processor;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -24,13 +26,14 @@ import java.util.Properties;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HubEventProcessor implements Runnable {
-    private static final List<String> TOPICS = List.of("telemetry.hubs.v1");
-    private static final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
-    private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(1000);
+    static List<String> TOPICS = List.of("telemetry.hubs.v1");
+    static Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+    static Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(1000);
 
-    private final HubEventHandler handler;
-    private final KafkaConsumer<String, HubEventAvro> consumer = new KafkaConsumer<>(getConsumerProperties());
+    HubEventHandler handler;
+    KafkaConsumer<String, HubEventAvro> consumer = new KafkaConsumer<>(getConsumerProperties());
 
     @Override
     public void run() {
@@ -60,7 +63,6 @@ public class HubEventProcessor implements Runnable {
             }
         }
     }
-
 
     private static Properties getConsumerProperties() {
         Properties properties = new Properties();
