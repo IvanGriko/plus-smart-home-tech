@@ -1,9 +1,7 @@
 package ru.yandex.practicum.handler;
 
 import com.google.protobuf.Timestamp;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.grpc.HubRouterGrpcClient;
@@ -39,11 +37,10 @@ import java.util.stream.Stream;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SnapshotHandler {
-    HubRouterGrpcClient grpcClient;
-    ConditionRepository conditionRepository;
-    ActionRepository actionRepository;
+    private final HubRouterGrpcClient grpcClient;
+    private final ConditionRepository conditionRepository;
+    private final ActionRepository actionRepository;
 
     public void handle(SensorsSnapshotAvro snapshot) {
         String hubId = snapshot.getHubId();
