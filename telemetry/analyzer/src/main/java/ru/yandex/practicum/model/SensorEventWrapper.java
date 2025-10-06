@@ -1,12 +1,11 @@
 package ru.yandex.practicum.model;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
 public class SensorEventWrapper {
-    String id;
-    Object data;
+    private String id;
+    private Object data;
 }

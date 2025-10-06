@@ -8,6 +8,7 @@ import ru.yandex.practicum.processor.HubEventProcessor;
 import ru.yandex.practicum.processor.SnapshotProcessor;
 
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class Analyzer {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Analyzer.class, args);
