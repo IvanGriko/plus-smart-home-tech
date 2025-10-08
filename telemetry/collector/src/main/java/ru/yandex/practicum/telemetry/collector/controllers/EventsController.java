@@ -21,7 +21,7 @@ public class EventsController extends CollectorControllerGrpc.CollectorControlle
     private final Map<SensorEventProto.PayloadCase, SensorEventHandler> sensorEventHandlers;
     private final Map<HubEventProto.PayloadCase, HubEventHandler> hubEventHandlers;
 
-    public EventsController(Set<SensorEventHandler> sensorEventHandlers,Set<HubEventHandler> hubEventHandlers) {
+    public EventsController(Set<SensorEventHandler> sensorEventHandlers, Set<HubEventHandler> hubEventHandlers) {
         this.sensorEventHandlers = sensorEventHandlers.stream()
                 .collect(Collectors.toMap(
                         SensorEventHandler::getMessageType,

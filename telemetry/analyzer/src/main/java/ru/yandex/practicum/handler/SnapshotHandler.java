@@ -1,9 +1,7 @@
 package ru.yandex.practicum.handler;
 
 import com.google.protobuf.Timestamp;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.grpc.HubRouterGrpcClient;
@@ -17,11 +15,11 @@ import ru.yandex.practicum.kafka.telemetry.event.SensorStateAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SwitchSensorAvro;
 import ru.yandex.practicum.kafka.telemetry.event.TemperatureSensorAvro;
+import ru.yandex.practicum.model.Action;
 import ru.yandex.practicum.model.Condition;
 import ru.yandex.practicum.model.ConditionOperation;
 import ru.yandex.practicum.model.ConditionType;
 import ru.yandex.practicum.model.Scenario;
-import ru.yandex.practicum.model.Action;
 import ru.yandex.practicum.model.SensorEventWrapper;
 import ru.yandex.practicum.repository.ActionRepository;
 import ru.yandex.practicum.repository.ConditionRepository;
@@ -39,11 +37,10 @@ import java.util.stream.Stream;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SnapshotHandler {
-    HubRouterGrpcClient grpcClient;
-    ConditionRepository conditionRepository;
-    ActionRepository actionRepository;
+    private final HubRouterGrpcClient grpcClient;
+    private final ConditionRepository conditionRepository;
+    private final ActionRepository actionRepository;
 
     public void handle(SensorsSnapshotAvro snapshot) {
         String hubId = snapshot.getHubId();
@@ -176,11 +173,10 @@ public class SnapshotHandler {
                 return data.getCo2Level();
             };
 
-            case HUMIDITY ->
-                    func = x -> {
-                        ClimateSensorAvro data = (ClimateSensorAvro) x.getData();
-                        return data.getHumidity();
-                    };
+            case HUMIDITY -> func = x -> {
+                ClimateSensorAvro data = (ClimateSensorAvro) x.getData();
+                return data.getHumidity();
+            };
             default -> {
                 return null;
             }
