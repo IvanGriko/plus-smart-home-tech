@@ -21,7 +21,7 @@ public interface ShoppingStoreOperations {
     @PutMapping
     ProductDto addProduct(@Valid @RequestBody ProductDto product);
 
-    @GetMapping
+    @GetMapping("/shopping-store/{category}")
     Collection<ProductDto> searchProducts(@PathVariable String category, @PathVariable Pageable params);
 
     @GetMapping("/{productId}")
