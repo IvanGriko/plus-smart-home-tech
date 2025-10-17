@@ -19,7 +19,7 @@ public interface ShoppingStoreOperations {
 //    @GetMapping
 //    Collection<ProductDto> searchProducts(@PathVariable String category, @PathVariable Pageable params);
 
-    @GetMapping("/products")
+    @GetMapping
     Collection<ProductDto> searchProducts(
             @RequestParam(value = "category", required = false) String category,
             Pageable pageable
