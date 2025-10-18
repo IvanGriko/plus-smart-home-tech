@@ -67,6 +67,11 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
 //    @Override
+//    public Collection<ProductDto> searchProducts(ProductCategory category, Pageable params) {
+//        return List.of();
+//    }
+
+//    @Override
 //    @Transactional(readOnly = true)
 //    public Collection<ProductDto> searchProducts(ProductCategory category, Pageable params) {
 //        Sort sort = Sort.by(params.getSort().stream().map(Sort.Order::asc).toList());
@@ -77,13 +82,9 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<ProductDto> searchProducts(ProductCategory category, Pageable params) {
-        Sort sort = !params.getSort().isEmpty() ?
-                Sort.by(params.getSort().stream().map(Sort.Order::asc).toList()) :
-                Sort.unsorted();
-
+    public Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params) {
+        Sort sort = Sort.by("productName", "price");
         PageRequest pageable = PageRequest.of(params.getPage(), params.getSize(), sort);
-
         List<Product> products = productRepository.findByProductCategory(category, pageable);
         return productMapper.mapToListProductDto(products);
     }

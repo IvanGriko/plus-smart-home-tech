@@ -26,7 +26,7 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
         log.info("searchProducts called");
         log.info("category: {}", category);
         log.info("params: {}", params);
-        return shoppingService.searchProducts(ProductCategory.valueOf(category), params);
+        return shoppingService.findByProductCategory(ProductCategory.valueOf(category), params);
     }
 
     @Override

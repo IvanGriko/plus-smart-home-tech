@@ -20,5 +20,5 @@ public interface ShoppingService {
 
     void setProductQuantityState(SetProductQuantityStateRequest request);
 
-    Collection<ProductDto> searchProducts(ProductCategory category, Pageable params);
+    Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params);
 }
