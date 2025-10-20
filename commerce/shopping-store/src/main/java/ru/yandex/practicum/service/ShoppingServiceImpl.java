@@ -80,11 +80,21 @@ public class ShoppingServiceImpl implements ShoppingService {
 //        return productMapper.mapToListProductDto(products);
 //    }
 
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params) {
+//        Sort sort = Sort.by("productName", "price");
+//        PageRequest pageable = PageRequest.of(params.getPage(), params.getSize(), sort);
+//        List<Product> products = productRepository.findByProductCategory(category, pageable);
+//        return productMapper.mapToListProductDto(products);
+//    }
+
     @Override
     @Transactional(readOnly = true)
     public Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params) {
         Sort sort = Sort.by("productName", "price");
-        PageRequest pageable = PageRequest.of(params.getPage(), params.getSize(), sort);
+        int pageSize = Math.max(params.getSize(), 1);
+        PageRequest pageable = PageRequest.of(params.getPage(), pageSize, sort);
         List<Product> products = productRepository.findByProductCategory(category, pageable);
         return productMapper.mapToListProductDto(products);
     }
