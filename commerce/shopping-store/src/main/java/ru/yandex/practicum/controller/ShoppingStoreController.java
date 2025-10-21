@@ -48,8 +48,8 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
 
     @Override
     @PostMapping("/quantityState/{productId}")
-    public void updateProductQuantityState(UUID productId, String quantityState) {
-        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(productId,
+    public void updateProductQuantityState(String productId, String quantityState) {
+        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(UUID.fromString(productId),
                 QuantityState.valueOf(quantityState));
         shoppingService.setProductQuantityState(request);
 //        return true;
