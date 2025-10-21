@@ -119,8 +119,6 @@ public class WarehouseServiceImpl implements WarehouseService {
         } catch (Exception e) {
             // just because we are not adding product to store when add to warehouse updating crushes
         }
-
-
     }
 
     private BookedProductsDto calculateDeliveryParams(Supplier<Stream<WarehouseProduct>> streamSupplier) {
