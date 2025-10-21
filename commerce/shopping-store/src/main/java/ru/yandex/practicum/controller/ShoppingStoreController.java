@@ -46,7 +46,7 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
         return true;
     }
 
-    @PutMapping("/quantityState/{productId}")
+    @Override
     public boolean updateProductQuantityState(
             @PathVariable UUID productId,
             @RequestParam String quantityState
