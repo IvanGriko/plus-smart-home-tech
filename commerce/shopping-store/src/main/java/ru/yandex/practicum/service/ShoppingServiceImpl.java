@@ -19,7 +19,6 @@ import ru.yandex.practicum.repository.ShoppingStoreRepository;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -60,21 +59,10 @@ public class ShoppingServiceImpl implements ShoppingService {
         productRepository.save(product);
     }
 
-//    @Override
-//    @Transactional
-//    public void setProductQuantityState(SetProductQuantityStateRequest request) {
-//        Product product = getProductFromStore(request.getProductId());
-//        product.setQuantityState(request.getQuantityState());
-//        productRepository.save(product);
-//    }
-
     @Override
+    @Transactional
     public void setProductQuantityState(SetProductQuantityStateRequest request) {
-        if (request == null || request.getProductId() == null || request.getQuantityState() == null) {
-            throw new IllegalArgumentException("Invalid or incomplete request.");
-        }
-        Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new EntityNotFoundException("Product not found."));
+        Product product = getProductFromStore(request.getProductId());
         product.setQuantityState(request.getQuantityState());
         productRepository.save(product);
     }

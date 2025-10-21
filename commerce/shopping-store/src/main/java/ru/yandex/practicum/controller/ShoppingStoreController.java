@@ -47,11 +47,8 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
     }
 
     @Override
-    @PostMapping("/quantityState/{productId}")
-    public void updateProductQuantityState(String productId, Enum quantityState) {
-        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(UUID.fromString(productId),
-                String.valueOf(quantityState));
+    public boolean updateProductQuantity(SetProductQuantityStateRequest request) {
         shoppingService.setProductQuantityState(request);
-//        return true;
+        return true;
     }
 }
