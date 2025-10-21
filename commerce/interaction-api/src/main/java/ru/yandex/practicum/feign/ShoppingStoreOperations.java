@@ -37,4 +37,10 @@ public interface ShoppingStoreOperations {
 
     @PostMapping("/quantityState")
     boolean updateProductQuantity(@Valid @RequestBody SetProductQuantityStateRequest request);
+
+    @PutMapping("/quantityState/{productId}")
+    boolean updateProductQuantityState(
+            @PathVariable UUID productId,
+            @RequestParam String quantityState
+    );
 }

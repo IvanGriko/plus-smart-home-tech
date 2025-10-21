@@ -2,8 +2,7 @@ package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.Pageable;
 import ru.yandex.practicum.dto.ProductCategory;
 import ru.yandex.practicum.dto.ProductDto;
@@ -50,9 +49,19 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
         return true;
     }
 
-
     @Override
     public boolean updateProductQuantity(SetProductQuantityStateRequest request) {
+        shoppingService.setProductQuantityState(request);
+        return true;
+    }
+
+    @Override
+    @PutMapping("/quantityState/{productId}")
+    public boolean updateProductQuantityState(
+            @PathVariable UUID productId,
+            @RequestParam String quantityState
+    ) {
+        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(productId, quantityState);
         shoppingService.setProductQuantityState(request);
         return true;
     }

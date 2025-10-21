@@ -1,6 +1,7 @@
 package ru.yandex.practicum.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,7 @@ import ru.yandex.practicum.repository.ShoppingStoreRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -66,19 +68,13 @@ public class ShoppingServiceImpl implements ShoppingService {
 //        productRepository.save(product);
 //    }
 
+    @Override
     public void setProductQuantityState(SetProductQuantityStateRequest request) {
-        // Проверка входных данных
-        if (request == null || request.getProductId() == null || request.getQuantityState() == null) {
-            return; // Немедленно покидаем метод, ничего не делаем дальше
-        }
+        // Проверка существования продукта
+        Product product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
-        // Получаем продукт из хранилища
-        Product product = getProductFromStore(request.getProductId());
-        if (product == null) {
-            return; // Продукта с указанным ID не найдено, заканчиваем выполнение
-        }
-
-        // Применяем обновление состояния
+        // Обновляем состояние товара
         product.setQuantityState(request.getQuantityState());
         productRepository.save(product);
     }
