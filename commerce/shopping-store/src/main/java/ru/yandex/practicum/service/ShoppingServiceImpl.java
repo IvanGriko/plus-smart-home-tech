@@ -70,11 +70,11 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     public void setProductQuantityState(SetProductQuantityStateRequest request) {
-        // Проверка существования продукта
+        if (request == null || request.getProductId() == null || request.getQuantityState() == null) {
+            throw new IllegalArgumentException("Invalid or incomplete request.");
+        }
         Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
-
-        // Обновляем состояние товара
+                .orElseThrow(() -> new EntityNotFoundException("Product not found."));
         product.setQuantityState(request.getQuantityState());
         productRepository.save(product);
     }

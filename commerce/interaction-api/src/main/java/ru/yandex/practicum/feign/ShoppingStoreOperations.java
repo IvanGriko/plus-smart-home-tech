@@ -5,7 +5,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.Pageable;
 import ru.yandex.practicum.dto.ProductDto;
-import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -15,9 +14,6 @@ public interface ShoppingStoreOperations {
 
     @PutMapping
     ProductDto addProduct(@Valid @RequestBody ProductDto product);
-
-//    @GetMapping
-//    Collection<ProductDto> searchProducts(@PathVariable String category, @PathVariable Pageable params);
 
     @GetMapping
     Collection<ProductDto> searchProducts(
@@ -33,10 +29,6 @@ public interface ShoppingStoreOperations {
 
     @PostMapping("/removeProductFromStore")
     boolean removeProduct(@RequestBody UUID productId);
-
-
-    @PostMapping("/quantityState")
-    boolean updateProductQuantity(@Valid @RequestBody SetProductQuantityStateRequest request);
 
     @PutMapping("/quantityState/{productId}")
     boolean updateProductQuantityState(

@@ -3,10 +3,7 @@ package ru.yandex.practicum.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.dto.Pageable;
-import ru.yandex.practicum.dto.ProductCategory;
-import ru.yandex.practicum.dto.ProductDto;
-import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
+import ru.yandex.practicum.dto.*;
 import ru.yandex.practicum.feign.ShoppingStoreOperations;
 import ru.yandex.practicum.service.ShoppingService;
 
@@ -49,19 +46,13 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
         return true;
     }
 
-    @Override
-    public boolean updateProductQuantity(SetProductQuantityStateRequest request) {
-        shoppingService.setProductQuantityState(request);
-        return true;
-    }
-
-    @Override
     @PutMapping("/quantityState/{productId}")
     public boolean updateProductQuantityState(
             @PathVariable UUID productId,
             @RequestParam String quantityState
     ) {
-        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(productId, quantityState);
+        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(productId,
+                QuantityState.valueOf(quantityState));
         shoppingService.setProductQuantityState(request);
         return true;
     }
