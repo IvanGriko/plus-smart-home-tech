@@ -1,17 +1,12 @@
 package ru.yandex.practicum.service;
 
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.dto.Pageable;
-import ru.yandex.practicum.dto.ProductCategory;
-import ru.yandex.practicum.dto.ProductDto;
-import ru.yandex.practicum.dto.ProductState;
-import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
+import ru.yandex.practicum.dto.*;
 import ru.yandex.practicum.exceptions.ProductNotFoundException;
 import ru.yandex.practicum.mapper.ProductMapper;
 import ru.yandex.practicum.model.Product;
@@ -61,10 +56,11 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     @Transactional
-    public void setProductQuantityState(SetProductQuantityStateRequest request) {
-        Product product = getProductFromStore(request.getProductId());
-        product.setQuantityState(request.getQuantityState());
+    public boolean setProductQuantityState(UUID productId, String quantityState) {
+        Product product = getProductFromStore(productId);
+        product.setQuantityState(QuantityState.valueOf(quantityState));
         productRepository.save(product);
+        return true;
     }
 
     @Override

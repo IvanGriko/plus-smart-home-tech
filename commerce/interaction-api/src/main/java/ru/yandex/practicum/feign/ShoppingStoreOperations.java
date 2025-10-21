@@ -31,6 +31,6 @@ public interface ShoppingStoreOperations {
     @PostMapping("/removeProductFromStore")
     boolean removeProduct(@RequestBody UUID productId);
 
-    @PostMapping("/quantityState")
-    boolean updateProductQuantity(@Valid @RequestBody SetProductQuantityStateRequest request);
+    @PostMapping("/quantityState/{productId}")
+    boolean updateProductQuantityState(@PathVariable UUID productId, @RequestParam String quantityState);
 }
