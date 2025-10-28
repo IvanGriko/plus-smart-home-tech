@@ -1,8 +1,10 @@
 package ru.yandex.practicum.service;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.dto.Pageable;
 import ru.yandex.practicum.dto.ProductCategory;
 import ru.yandex.practicum.dto.ProductDto;
+import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -16,7 +18,7 @@ public interface ShoppingService {
 
     void removeProductFromStore(UUID productId);
 
-    boolean setProductQuantityState(UUID productId, String quantityState);
+    boolean setProductQuantityState(SetProductQuantityStateRequest request);
 
     Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params);
 }

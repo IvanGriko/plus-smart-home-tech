@@ -1,5 +1,6 @@
 package ru.yandex.practicum.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +48,8 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
     }
 
     @Override
-    public boolean updateProductQuantityState(UUID productId, String quantityState) {
-        shoppingService.setProductQuantityState(productId, quantityState);
+    public Boolean updateProductQuantityState(@Valid @RequestBody SetProductQuantityStateRequest request) {
+        shoppingService.setProductQuantityState(request);
         return true;
     }
 }

@@ -2,6 +2,7 @@ package ru.yandex.practicum.feign;
 
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.Pageable;
 import ru.yandex.practicum.dto.ProductDto;
@@ -31,6 +32,6 @@ public interface ShoppingStoreOperations {
     @PostMapping("/removeProductFromStore")
     boolean removeProduct(@RequestBody UUID productId);
 
-    @PostMapping("/quantityState/{productId}")
-    boolean updateProductQuantityState(@PathVariable UUID productId, @RequestParam String quantityState);
+    @PostMapping("/quantityState")
+    Boolean updateProductQuantityState(@RequestBody SetProductQuantityStateRequest request);
 }
