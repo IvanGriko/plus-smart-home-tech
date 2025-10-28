@@ -48,8 +48,9 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
     }
 
     @Override
-    public Boolean updateProductQuantityState(@Valid @RequestBody SetProductQuantityStateRequest request) {
-        shoppingService.setProductQuantityState(request);
-        return true;
+    public boolean updateProductQuantityState(UUID productId, String quantityState) {
+        QuantityState qs = QuantityState.valueOf(quantityState.toUpperCase());
+        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(productId, qs);
+        return shoppingService.setProductQuantityState(request);
     }
 }

@@ -33,5 +33,7 @@ public interface ShoppingStoreOperations {
     boolean removeProduct(@RequestBody UUID productId);
 
     @PostMapping("/quantityState")
-    Boolean updateProductQuantityState(@RequestBody SetProductQuantityStateRequest request);
+    boolean updateProductQuantityState(
+            @RequestParam("productId") UUID productId,
+            @RequestParam("quantityState") String quantityState);
 }
