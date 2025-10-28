@@ -2,11 +2,9 @@ package ru.yandex.practicum.feign;
 
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.Pageable;
 import ru.yandex.practicum.dto.ProductDto;
-import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
 
 import java.util.Collection;
 import java.util.UUID;
