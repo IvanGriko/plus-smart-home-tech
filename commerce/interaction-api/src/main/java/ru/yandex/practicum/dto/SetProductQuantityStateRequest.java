@@ -16,7 +16,4 @@ public class SetProductQuantityStateRequest {
     UUID productId;
 
     QuantityState quantityState;
-
-    public SetProductQuantityStateRequest(UUID productId, String quantityState) {
-    }
 }
