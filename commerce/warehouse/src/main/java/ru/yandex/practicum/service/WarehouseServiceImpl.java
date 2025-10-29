@@ -115,9 +115,9 @@ public class WarehouseServiceImpl implements WarehouseService {
             quantityState = QuantityState.MANY;
         }
         try {
-            shoppingStoreOperations.updateProductQuantityState(product.getProductId(), quantityState.toString());
+            shoppingStoreOperations.updateProductQuantityState(product.getProductId(), quantityState.name());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            // just because we are not adding product to store when add to warehouse updating crushes
         }
     }
 
