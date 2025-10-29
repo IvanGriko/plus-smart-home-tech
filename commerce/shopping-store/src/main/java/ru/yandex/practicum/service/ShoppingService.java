@@ -1,11 +1,7 @@
 package ru.yandex.practicum.service;
 
-import ru.yandex.practicum.dto.Pageable;
-import ru.yandex.practicum.dto.ProductCategory;
-import ru.yandex.practicum.dto.ProductDto;
-import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
+import ru.yandex.practicum.dto.*;
 
-import java.util.Collection;
 import java.util.UUID;
 
 public interface ShoppingService {
@@ -19,5 +15,5 @@ public interface ShoppingService {
 
     boolean setProductQuantityState(SetProductQuantityStateRequest request);
 
-    Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params);
+    SearchResultDto findByProductCategory(ProductCategory category, Pageable params);
 }

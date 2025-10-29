@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.Pageable;
 import ru.yandex.practicum.dto.ProductDto;
+import ru.yandex.practicum.dto.SearchResultDto;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -17,17 +18,17 @@ public interface ShoppingStoreOperations {
     @PutMapping
     ProductDto addProduct(@Valid @RequestBody ProductDto product);
 
-    @GetMapping
-    Collection<ProductDto> searchProducts(
-            @RequestParam(value = "category", required = false) String category,
-            Pageable pageable
-    );
-
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    Page<ProductDto> searchProducts(
+//    @GetMapping
+//    Collection<ProductDto> searchProducts(
 //            @RequestParam(value = "category", required = false) String category,
 //            Pageable pageable
 //    );
+
+    @GetMapping
+    SearchResultDto searchProducts(
+            @RequestParam(value = "category", required = false) String category,
+            Pageable pageable
+    );
 
     @GetMapping("/{productId}")
     ProductDto getProductById(@PathVariable UUID productId);

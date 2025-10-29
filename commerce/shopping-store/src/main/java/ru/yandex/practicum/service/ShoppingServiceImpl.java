@@ -12,7 +12,6 @@ import ru.yandex.practicum.mapper.ProductMapper;
 import ru.yandex.practicum.model.Product;
 import ru.yandex.practicum.repository.ShoppingStoreRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,14 +62,28 @@ public class ShoppingServiceImpl implements ShoppingService {
         return true;
     }
 
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params) {
+//        Sort sort = Sort.by("productName", "price");
+//        int pageSize = Math.max(params.getSize(), 1);
+//        PageRequest pageable = PageRequest.of(params.getPage(), pageSize, sort);
+//        List<Product> products = productRepository.findByProductCategory(category, pageable);
+//        return productMapper.mapToListProductDto(products);
+//    }
+
     @Override
     @Transactional(readOnly = true)
-    public Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params) {
+    public SearchResultDto findByProductCategory(ProductCategory category, Pageable params) {
         Sort sort = Sort.by("productName", "price");
         int pageSize = Math.max(params.getSize(), 1);
         PageRequest pageable = PageRequest.of(params.getPage(), pageSize, sort);
         List<Product> products = productRepository.findByProductCategory(category, pageable);
-        return productMapper.mapToListProductDto(products);
+        List<ProductDto> dtos = (List<ProductDto>) productMapper.mapToListProductDto(products);
+        SearchResultDto result = new SearchResultDto();
+        result.setDescription("Очередная страница товаров в соответствии с типом");
+        result.setContent(dtos);
+        return result;
     }
 
     private Product getProductFromStore(UUID productId) {
