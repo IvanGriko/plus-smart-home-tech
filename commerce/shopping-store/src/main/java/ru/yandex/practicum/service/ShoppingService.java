@@ -1,6 +1,5 @@
 package ru.yandex.practicum.service;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.dto.Pageable;
 import ru.yandex.practicum.dto.ProductCategory;
 import ru.yandex.practicum.dto.ProductDto;

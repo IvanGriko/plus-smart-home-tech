@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.dto.*;
 import ru.yandex.practicum.exceptions.ProductNotFoundException;
 import ru.yandex.practicum.mapper.ProductMapper;
