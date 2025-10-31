@@ -10,6 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchResultDto {
-    private String description;
     private List<ProductDto> content;
+    private List<SortDto> sort;
 }

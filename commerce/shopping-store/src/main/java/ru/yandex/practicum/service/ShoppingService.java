@@ -1,5 +1,6 @@
 package ru.yandex.practicum.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.*;
 
 import java.util.UUID;
@@ -15,5 +16,8 @@ public interface ShoppingService {
 
     boolean setProductQuantityState(SetProductQuantityStateRequest request);
 
-    SearchResultDto findByProductCategory(ProductCategory category, Pageable params);
+//    SearchResultDto findByProductCategory(ProductCategory category, Pageable params);
+
+    @Transactional(readOnly = true)
+    SearchResultDto findByProductCategory(ProductCategory category, Integer page, Integer size, String sortString);
 }

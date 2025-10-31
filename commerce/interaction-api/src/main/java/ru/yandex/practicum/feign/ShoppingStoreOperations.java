@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.Pageable;
+import ru.yandex.practicum.dto.ProductCategory;
 import ru.yandex.practicum.dto.ProductDto;
 import ru.yandex.practicum.dto.SearchResultDto;
 
@@ -14,6 +15,8 @@ import java.util.UUID;
 
 @FeignClient(name = "shopping-store")
 public interface ShoppingStoreOperations {
+
+    SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sort);
 
     @PutMapping
     ProductDto addProduct(@Valid @RequestBody ProductDto product);

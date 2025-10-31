@@ -7,7 +7,6 @@ import ru.yandex.practicum.dto.*;
 import ru.yandex.practicum.feign.ShoppingStoreOperations;
 import ru.yandex.practicum.service.ShoppingService;
 
-import java.util.Collection;
 import java.util.UUID;
 
 @Slf4j
@@ -25,17 +24,27 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
 //        return shoppingService.findByProductCategory(ProductCategory.valueOf(category), params);
 //    }
 
+//    @Override
+//    public SearchResultDto searchProducts(String category, Pageable params) {
+//        log.info("searchProducts called");
+//        log.info("category: {}", category);
+//        log.info("params: {}", params);
+//        return shoppingService.findByProductCategory(ProductCategory.valueOf(category), params);
+//    }
+
     @Override
-    public SearchResultDto searchProducts(String category, Pageable params) {
-        log.info("searchProducts called");
-        log.info("category: {}", category);
-        log.info("params: {}", params);
-        return shoppingService.findByProductCategory(ProductCategory.valueOf(category), params);
+    public SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sort) {
+        return shoppingService.findByProductCategory(category, page, size, sort);
     }
 
     @Override
     public ProductDto addProduct(ProductDto product) {
         return shoppingService.addProduct(product);
+    }
+
+    @Override
+    public SearchResultDto searchProducts(String category, Pageable pageable) {
+        return null;
     }
 
     @Override
