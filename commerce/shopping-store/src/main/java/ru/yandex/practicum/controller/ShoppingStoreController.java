@@ -42,10 +42,10 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
         return shoppingService.addProduct(product);
     }
 
-    @Override
-    public SearchResultDto searchProducts(String category, Pageable pageable) {
-        return null;
-    }
+//    @Override
+//    public SearchResultDto searchProducts(String category, Pageable pageable) {
+//        return null;
+//    }
 
     @Override
     public ProductDto getProductById(UUID productId) {
