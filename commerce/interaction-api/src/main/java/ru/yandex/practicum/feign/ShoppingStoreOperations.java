@@ -16,6 +16,7 @@ import java.util.UUID;
 @FeignClient(name = "shopping-store")
 public interface ShoppingStoreOperations {
 
+    @GetMapping
     SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sort);
 
     @PutMapping
