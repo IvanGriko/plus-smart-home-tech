@@ -19,8 +19,8 @@ public interface ShoppingStoreOperations {
     @GetMapping
     SearchResultDto searchProducts(
             @RequestParam(value = "category", required = false) ProductCategory category,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "size", required = false) Integer size,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(value = "sort", required = false) String sortField
     );
 
