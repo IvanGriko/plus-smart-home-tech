@@ -17,7 +17,12 @@ import java.util.UUID;
 public interface ShoppingStoreOperations {
 
     @GetMapping
-    SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sort);
+    SearchResultDto searchProducts(
+            @RequestParam("category") ProductCategory category,
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size,
+            @RequestParam("sort") String sortField
+    );
 
     @PutMapping
     ProductDto addProduct(@Valid @RequestBody ProductDto product);
