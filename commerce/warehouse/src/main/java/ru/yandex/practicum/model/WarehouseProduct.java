@@ -1,5 +1,6 @@
 package ru.yandex.practicum.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -8,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.UUID;
 
+@Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "warehouse_product")

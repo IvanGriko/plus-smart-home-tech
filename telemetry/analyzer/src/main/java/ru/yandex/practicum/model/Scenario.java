@@ -1,13 +1,10 @@
 package ru.yandex.practicum.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+@Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "scenarios")

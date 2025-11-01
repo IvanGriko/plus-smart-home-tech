@@ -10,6 +10,7 @@ import ru.yandex.practicum.dto.QuantityState;
 
 import java.util.UUID;
 
+@Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "product")
