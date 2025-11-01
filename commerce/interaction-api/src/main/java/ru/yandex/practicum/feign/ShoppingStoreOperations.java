@@ -33,11 +33,11 @@ public interface ShoppingStoreOperations {
 //            Pageable pageable
 //    );
 
-    @GetMapping
-    SearchResultDto searchProducts(
-            @RequestParam(value = "category", required = false) String category,
-            Pageable pageable
-    );
+//    @GetMapping
+//    SearchResultDto searchProducts(
+//            @RequestParam(value = "category", required = false) String category,
+//            Pageable pageable
+//    );
 
     @GetMapping("/{productId}")
     ProductDto getProductById(@PathVariable UUID productId);
