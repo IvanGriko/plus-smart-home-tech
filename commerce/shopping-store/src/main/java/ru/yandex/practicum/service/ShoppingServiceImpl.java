@@ -98,12 +98,10 @@ public class ShoppingServiceImpl implements ShoppingService {
                 .map(s -> Sort.by(Sort.Direction.valueOf(s.getDirection()), s.getProperty()))
                 .reduce(Sort.unsorted(), Sort::and);
         Pageable pageable = PageRequest.of(page, size, sort);
-
         Page<Product> products = productRepository.findByProductCategory(category, pageable);
         List<ProductDto> productDtos = products.stream()
-                .map(product -> ProductMapper.mapToProductDto(product))
+                .map(ProductMapper::mapToProductDto)
                 .toList();
-
         SearchResultDto result = new SearchResultDto();
         result.setContent(productDtos);
         result.setSort(sortList);
