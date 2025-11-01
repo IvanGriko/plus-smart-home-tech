@@ -1,7 +1,9 @@
 package ru.yandex.practicum.config;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -17,13 +19,14 @@ import java.util.Properties;
 @Getter
 @Setter
 @Configuration
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @ConfigurationProperties("aggregator")
 public class AggregatorConfig {
-    private String snapshotTopic;
-    private List<String> sensorTopic;
-    private Duration consumeAttemptTimeout;
-    private Properties producerProperties;
-    private Properties consumerProperties;
+    String snapshotTopic;
+    List<String> sensorTopic;
+    Duration consumeAttemptTimeout;
+    Properties producerProperties;
+    Properties consumerProperties;
 
     @Bean
     public KafkaProducer<String, SpecificRecordBase> producer() {

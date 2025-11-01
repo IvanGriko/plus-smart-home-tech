@@ -1,7 +1,9 @@
 package ru.yandex.practicum.config;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,14 +18,15 @@ import java.util.Properties;
 @Getter
 @Setter
 @Configuration
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @ConfigurationProperties("analyzer")
 public class AnalyzerConfig {
-    private List<String> hubTopics;
-    private Duration hubConsumeAttemptTimeout;
-    private Properties hubConsumerProperties;
-    private List<String> snapshotTopics;
-    private Duration snapshotConsumeAttemptTimeout;
-    private Properties snapshotConsumerProperties;
+    List<String> hubTopics;
+    Duration hubConsumeAttemptTimeout;
+    Properties hubConsumerProperties;
+    List<String> snapshotTopics;
+    Duration snapshotConsumeAttemptTimeout;
+    Properties snapshotConsumerProperties;
 
     @Bean
     public KafkaConsumer<String, HubEventAvro> hubConsumer() {

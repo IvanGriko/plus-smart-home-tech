@@ -16,8 +16,5 @@ public interface ShoppingService {
 
     boolean setProductQuantityState(SetProductQuantityStateRequest request);
 
-//    SearchResultDto findByProductCategory(ProductCategory category, Pageable params);
-
-    @Transactional(readOnly = true)
     SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sortString);
 }

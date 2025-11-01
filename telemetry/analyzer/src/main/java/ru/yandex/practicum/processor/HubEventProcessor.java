@@ -1,6 +1,8 @@
 package ru.yandex.practicum.processor;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -23,12 +25,12 @@ import java.util.Properties;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HubEventProcessor implements Runnable {
-    private static final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
-
-    private final HubEventHandler handler;
-    private final AnalyzerConfig config;
-    private final KafkaConsumer<String, HubEventAvro> consumer;
+    static Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+    HubEventHandler handler;
+    AnalyzerConfig config;
+    KafkaConsumer<String, HubEventAvro> consumer;
 
     private static Properties getConsumerProperties() {
         Properties properties = new Properties();
@@ -52,7 +54,6 @@ public class HubEventProcessor implements Runnable {
         try {
             Runtime.getRuntime().addShutdownHook(new Thread(consumer::wakeup));
             consumer.subscribe(config.getHubTopics());
-
             while (true) {
                 ConsumerRecords<String, HubEventAvro> records = consumer.poll(config.getHubConsumeAttemptTimeout());
                 for (ConsumerRecord<String, HubEventAvro> record : records) {
@@ -63,7 +64,6 @@ public class HubEventProcessor implements Runnable {
                 }
             }
         } catch (WakeupException ignored) {
-
         } catch (Exception e) {
             log.error("Error:", e);
         } finally {

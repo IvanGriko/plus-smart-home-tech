@@ -1,6 +1,8 @@
 package ru.yandex.practicum;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -25,12 +27,13 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AggregationStarter {
-    private static final Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
-    private final AggregatorConfig aggregatorConfig;
-    private final KafkaConsumer<String, SensorEventAvro> consumer;
-    private final KafkaProducer<String, SpecificRecordBase> producer;
-    private final Map<String, SensorsSnapshotAvro> snapshots = new HashMap<>();
+    static Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+    AggregatorConfig aggregatorConfig;
+    KafkaConsumer<String, SensorEventAvro> consumer;
+    KafkaProducer<String, SpecificRecordBase> producer;
+    Map<String, SensorsSnapshotAvro> snapshots = new HashMap<>();
 
     private static void manageOffsets(ConsumerRecord<String, SensorEventAvro> record, int count,
                                       KafkaConsumer<String, SensorEventAvro> consumer) {
@@ -38,7 +41,6 @@ public class AggregationStarter {
                 new TopicPartition(record.topic(), record.partition()),
                 new OffsetAndMetadata(record.offset() + 1)
         );
-
         if (count % 10 == 0) {
             consumer.commitAsync(currentOffsets, (offsets, exception) -> {
                 if (exception != null) {
@@ -67,14 +69,11 @@ public class AggregationStarter {
                 }
                 consumer.commitAsync();
             }
-
         } catch (WakeupException ignored) {
-
         } catch (
                 Exception e) {
             log.error("Ошибка во время обработки событий от датчиков", e);
         } finally {
-
             try {
                 producer.flush();
                 consumer.commitSync(currentOffsets);
@@ -85,7 +84,6 @@ public class AggregationStarter {
                 producer.close();
             }
         }
-
     }
 
     public Optional<SensorsSnapshotAvro> updateState(SensorEventAvro event) {
@@ -115,7 +113,6 @@ public class AggregationStarter {
         snapshot.setTimestamp(event.getTimestamp());
         return Optional.of(snapshot);
     }
-
 
     private boolean isDataNotChanged(SensorStateAvro oldState, SensorEventAvro event) {
         return (oldState.getTimestamp().isAfter(event.getTimestamp())) ||

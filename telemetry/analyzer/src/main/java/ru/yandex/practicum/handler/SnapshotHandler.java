@@ -1,7 +1,9 @@
 package ru.yandex.practicum.handler;
 
 import com.google.protobuf.Timestamp;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.grpc.HubRouterGrpcClient;
@@ -37,10 +39,11 @@ import java.util.stream.Stream;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SnapshotHandler {
-    private final HubRouterGrpcClient grpcClient;
-    private final ConditionRepository conditionRepository;
-    private final ActionRepository actionRepository;
+    HubRouterGrpcClient grpcClient;
+    ConditionRepository conditionRepository;
+    ActionRepository actionRepository;
 
     public void handle(SensorsSnapshotAvro snapshot) {
         String hubId = snapshot.getHubId();
@@ -89,17 +92,14 @@ public class SnapshotHandler {
         List<Condition> conditions = conditionRepository.findAllByScenarioHubId(hubId);
         Supplier<Stream<SensorEventWrapper>> streamSupplier = () -> snapshot.getSensorsState().entrySet().stream()
                 .map(e -> mapToWrapper(e.getKey(), e.getValue()));
-
         Map<Condition, Boolean> result = new HashMap<>();
         for (Condition condition : conditions) {
             boolean isConditionDone = checkCondition(streamSupplier.get(), condition);
             result.put(condition, isConditionDone);
         }
-
         Map<Scenario, List<Boolean>> scenarios = result.entrySet().stream()
                 .collect(Collectors.groupingBy(e -> e.getKey().getScenario(),
                         Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
-
         return scenarios.entrySet().stream()
                 .filter(e -> !e.getValue().contains(false))
                 .map(Map.Entry::getKey)
@@ -116,21 +116,18 @@ public class SnapshotHandler {
         ConditionOperation operation = condition.getOperation();
         int value = condition.getValue();
         Predicate<Integer> predicate;
-
         switch (operation) {
             case EQUALS -> predicate = x -> x == value;
             case GREATER_THAN -> predicate = x -> x > value;
             case LOWER_THAN -> predicate = x -> x < value;
             default -> predicate = null;
         }
-
         return predicate;
     }
 
     Function<SensorEventWrapper, Integer> getFunction(Condition condition) {
         ConditionType type = condition.getType();
         Function<SensorEventWrapper, Integer> func;
-
         switch (type) {
             case MOTION -> func = x -> {
                 MotionSensorAvro data = (MotionSensorAvro) x.getData();
@@ -141,12 +138,10 @@ public class SnapshotHandler {
                     return 0;
                 }
             };
-
             case LUMINOSITY -> func = x -> {
                 LightSensorAvro data = (LightSensorAvro) x.getData();
                 return data.getLuminosity();
             };
-
             case SWITCH -> func = x -> {
                 SwitchSensorAvro data = (SwitchSensorAvro) x.getData();
                 boolean state = data.getState();
@@ -156,7 +151,6 @@ public class SnapshotHandler {
                     return 0;
                 }
             };
-
             case TEMPERATURE -> func = x -> {
                 Object object = x.getData();
                 if (object instanceof ClimateSensorAvro) {
@@ -167,12 +161,10 @@ public class SnapshotHandler {
                     return data.getTemperatureC();
                 }
             };
-
             case CO2LEVEL -> func = x -> {
                 ClimateSensorAvro data = (ClimateSensorAvro) x.getData();
                 return data.getCo2Level();
             };
-
             case HUMIDITY -> func = x -> {
                 ClimateSensorAvro data = (ClimateSensorAvro) x.getData();
                 return data.getHumidity();

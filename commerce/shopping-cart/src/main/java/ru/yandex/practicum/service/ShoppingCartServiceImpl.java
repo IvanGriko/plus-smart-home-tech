@@ -1,6 +1,8 @@
 package ru.yandex.practicum.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.ChangeProductQuantityRequest;
@@ -19,10 +21,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    private final ShoppingCartRepository shoppingCartRepository;
-    private final ShoppingCartMapper shoppingCartMapper;
-    private final WarehouseOperations warehouseClient;
+    ShoppingCartRepository shoppingCartRepository;
+    ShoppingCartMapper shoppingCartMapper;
+    WarehouseOperations warehouseClient;
 
     @Override
     @Transactional
@@ -36,7 +39,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         try {
             warehouseClient.checkShoppingCart(cartDto);
         } catch (Exception e) {
-            // warehhouse fail cheking
         }
         shoppingCartRepository.save(shoppingCart);
         return cartDto;
@@ -83,7 +85,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         try {
             warehouseClient.checkShoppingCart(cartDto);
         } catch (Exception e) {
-            // warehhouse fail cheking
         }
         shoppingCartRepository.save(shoppingCart);
         return cartDto;

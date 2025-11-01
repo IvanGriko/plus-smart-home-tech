@@ -1,13 +1,8 @@
 package ru.yandex.practicum.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.UuidGenerator;
 import ru.yandex.practicum.dto.ProductCategory;
 import ru.yandex.practicum.dto.ProductState;
@@ -15,33 +10,31 @@ import ru.yandex.practicum.dto.QuantityState;
 
 import java.util.UUID;
 
-@Entity
-@Getter
-@Setter
-@ToString
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "product")
 public class Product {
 
     @Id
     @UuidGenerator
-    private UUID productId;
+    UUID productId;
 
-    private String productName;
+    String productName;
 
-    private String description;
+    String description;
 
-    private String imageSrc;
-
-    @Enumerated(EnumType.STRING)
-    private QuantityState quantityState;
+    String imageSrc;
 
     @Enumerated(EnumType.STRING)
-    private ProductState productState;
-
-    private double rating;
+    QuantityState quantityState;
 
     @Enumerated(EnumType.STRING)
-    private ProductCategory productCategory;
+    ProductState productState;
 
-    private double price;
+    double rating;
+
+    @Enumerated(EnumType.STRING)
+    ProductCategory productCategory;
+
+    double price;
 }

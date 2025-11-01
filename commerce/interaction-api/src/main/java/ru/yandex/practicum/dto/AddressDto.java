@@ -1,27 +1,30 @@
 package ru.yandex.practicum.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressDto {
 
     @NotBlank
-    private String country;
+    String country;
 
     @NotBlank
-    private String city;
+    String city;
 
     @NotBlank
-    private String street;
+    String street;
 
     @NotBlank
-    private String house;
+    String house;
 
     @NotBlank
-    private String flat;
+    String flat;
 }

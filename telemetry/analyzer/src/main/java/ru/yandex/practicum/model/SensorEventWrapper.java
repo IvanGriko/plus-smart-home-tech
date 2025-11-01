@@ -1,10 +1,8 @@
 package ru.yandex.practicum.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class SensorEventWrapper {
     private String id;
     private Object data;

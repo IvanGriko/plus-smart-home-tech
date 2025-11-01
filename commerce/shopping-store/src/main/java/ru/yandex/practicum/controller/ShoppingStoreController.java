@@ -16,22 +16,6 @@ import java.util.UUID;
 public class ShoppingStoreController implements ShoppingStoreOperations {
     private final ShoppingService shoppingService;
 
-//    @Override
-//    public Collection<ProductDto> searchProducts(String category, Pageable params) {
-//        log.info("searchProducts called");
-//        log.info("category: {}", category);
-//        log.info("params: {}", params);
-//        return shoppingService.findByProductCategory(ProductCategory.valueOf(category), params);
-//    }
-
-//    @Override
-//    public SearchResultDto searchProducts(String category, Pageable params) {
-//        log.info("searchProducts called");
-//        log.info("category: {}", category);
-//        log.info("params: {}", params);
-//        return shoppingService.findByProductCategory(ProductCategory.valueOf(category), params);
-//    }
-
     @Override
     public SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sort) {
         return shoppingService.searchProducts(category, page, size, sort);
@@ -41,11 +25,6 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
     public ProductDto addProduct(ProductDto product) {
         return shoppingService.addProduct(product);
     }
-
-//    @Override
-//    public SearchResultDto searchProducts(String category, Pageable pageable) {
-//        return null;
-//    }
 
     @Override
     public ProductDto getProductById(UUID productId) {

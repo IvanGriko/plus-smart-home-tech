@@ -1,6 +1,8 @@
 package ru.yandex.practicum.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.dto.AddProductToWarehouseRequest;
@@ -8,7 +10,6 @@ import ru.yandex.practicum.dto.AddressDto;
 import ru.yandex.practicum.dto.BookedProductsDto;
 import ru.yandex.practicum.dto.NewProductInWarehouseRequest;
 import ru.yandex.practicum.dto.QuantityState;
-import ru.yandex.practicum.dto.SetProductQuantityStateRequest;
 import ru.yandex.practicum.dto.ShoppingCartDto;
 import ru.yandex.practicum.exceptions.NoSpecifiedProductInWarehouseException;
 import ru.yandex.practicum.exceptions.ProductInShoppingCartLowQuantityInWarehouse;
@@ -27,8 +28,9 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class WarehouseServiceImpl implements WarehouseService {
-    private static final AddressDto[] ADDRESSES =
+    static AddressDto[] ADDRESSES =
             new AddressDto[]{
                     new AddressDto("ADDRESS_1",
                             "ADDRESS_1",
@@ -40,9 +42,9 @@ public class WarehouseServiceImpl implements WarehouseService {
                             "ADDRESS_2",
                             "ADDRESS_2",
                             "ADDRESS_2")};
-    private final WarehouseRepository warehouseRepository;
-    private final WarehouseProductMapper warehouseProductMapper;
-    private final ShoppingStoreOperations shoppingStoreOperations;
+    WarehouseRepository warehouseRepository;
+    WarehouseProductMapper warehouseProductMapper;
+    ShoppingStoreOperations shoppingStoreOperations;
 
     @Override
     @Transactional
@@ -86,8 +88,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     private void checkIfProductAlreadyInWarehouse(UUID id) {
-        warehouseRepository.findById(id)
-                .ifPresent(product -> {
+        warehouseRepository.findById(id).ifPresent(product -> {
                     throw new SpecifiedProductAlreadyInWarehouseException("Product is already in warehouse");
                 });
     }
@@ -104,7 +105,6 @@ public class WarehouseServiceImpl implements WarehouseService {
     private void updateQuantityInShoppingStore(WarehouseProduct product) {
         int quantity = product.getQuantity();
         QuantityState quantityState;
-
         if (quantity == 0) {
             quantityState = QuantityState.ENDED;
         } else if (0 < quantity && quantity <= 10) {
@@ -117,7 +117,6 @@ public class WarehouseServiceImpl implements WarehouseService {
         try {
             shoppingStoreOperations.updateProductQuantityState(product.getProductId(), quantityState.name());
         } catch (Exception e) {
-            // just because we are not adding product to store when add to warehouse updating crushes
         }
     }
 
@@ -125,11 +124,9 @@ public class WarehouseServiceImpl implements WarehouseService {
         Double deliveryVolume = streamSupplier.get()
                 .map(product -> product.getWidth() * product.getHeight() * product.getDepth())
                 .reduce(0.0, Double::sum);
-
         Double deliveryWeight = streamSupplier.get()
                 .map(WarehouseProduct::getWeight)
                 .reduce(0.0, Double::sum);
-
         boolean isFragile = streamSupplier.get().anyMatch(WarehouseProduct::isFragile);
         return new BookedProductsDto(deliveryVolume, deliveryWeight, isFragile);
     }

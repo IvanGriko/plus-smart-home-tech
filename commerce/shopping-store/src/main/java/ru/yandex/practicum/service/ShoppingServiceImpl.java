@@ -1,6 +1,8 @@
 package ru.yandex.practicum.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +21,10 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ShoppingServiceImpl implements ShoppingService {
-    private final ShoppingStoreRepository productRepository;
-    private final ProductMapper productMapper;
+    ShoppingStoreRepository productRepository;
+    ProductMapper productMapper;
 
     @Override
     @Transactional
@@ -64,30 +67,6 @@ public class ShoppingServiceImpl implements ShoppingService {
         return true;
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Collection<ProductDto> findByProductCategory(ProductCategory category, Pageable params) {
-//        Sort sort = Sort.by("productName", "price");
-//        int pageSize = Math.max(params.getSize(), 1);
-//        PageRequest pageable = PageRequest.of(params.getPage(), pageSize, sort);
-//        List<Product> products = productRepository.findByProductCategory(category, pageable);
-//        return productMapper.mapToListProductDto(products);
-//    }
-
-//    @Override
-//    @Transactional(readOnly = true)
-//    public SearchResultDto findByProductCategory(ProductCategory category, Pageable params) {
-//        Sort sort = Sort.by("productName", "price");
-//        int pageSize = Math.max(params.getSize(), 1);
-//        PageRequest pageable = PageRequest.of(params.getPage(), pageSize, sort);
-//        List<Product> products = productRepository.findByProductCategory(category, pageable);
-//        List<ProductDto> dtos = (List<ProductDto>) productMapper.mapToListProductDto(products);
-//        SearchResultDto result = new SearchResultDto();
-//        result.setDescription("Очередная страница товаров в соответствии с типом");
-//        result.setContent(dtos);
-//        return result;
-//    }
-
     @Override
     @Transactional(readOnly = true)
     public SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sortString) {
@@ -120,6 +99,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     private Product getProductFromStore(UUID productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product is not found"));
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product is not found"));
     }
 }

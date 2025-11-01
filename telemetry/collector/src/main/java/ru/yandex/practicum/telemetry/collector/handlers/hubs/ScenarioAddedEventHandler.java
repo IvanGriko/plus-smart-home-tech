@@ -1,6 +1,8 @@
 package ru.yandex.practicum.telemetry.collector.handlers.hubs;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
@@ -18,9 +20,10 @@ import ru.yandex.practicum.telemetry.collector.mappers.TimestampMapper;
 
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ScenarioAddedEventHandler implements HubEventHandler {
-    private final String topic = "telemetry.hubs.v1";
-    private final KafkaClientProducer kafkaClientProducer;
+    String topic = "telemetry.hubs.v1";
+    KafkaClientProducer kafkaClientProducer;
 
     @Override
     public HubEventProto.PayloadCase getMessageType() {
@@ -43,7 +46,6 @@ public class ScenarioAddedEventHandler implements HubEventHandler {
                                         .setSensorId(deviceActionProto.getSensorId())
                                         .setValue(deviceActionProto.getValue())
                                         .build()
-
                 ).toList())
                 .setConditions(eventProto.getConditionList().stream().map(
                         conditionProto -> {
@@ -61,7 +63,6 @@ public class ScenarioAddedEventHandler implements HubEventHandler {
                                     .setValue(value)
                                     .build();
                         }
-
                 ).toList())
                 .build();
         return HubEventAvro.newBuilder()

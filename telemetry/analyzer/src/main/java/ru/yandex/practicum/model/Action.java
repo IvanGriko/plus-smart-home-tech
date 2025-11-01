@@ -1,6 +1,5 @@
 package ru.yandex.practicum.model;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,29 +8,27 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
-@Entity
-@Getter
-@Setter
-@ToString
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "actions")
 @SecondaryTable(name = "scenario_actions", pkJoinColumns = @PrimaryKeyJoinColumn(name = "action_id"))
 public class Action {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    long id;
 
-    private ActionType type;
-    private int value;
+    ActionType type;
+    int value;
 
     @ManyToOne
     @JoinColumn(name = "scenario_id", table = "scenario_actions")
-    private Scenario scenario;
+    Scenario scenario;
 
     @ManyToOne()
     @JoinColumn(name = "sensor_id", table = "scenario_actions")
-    private Sensor sensor;
+    Sensor sensor;
 }

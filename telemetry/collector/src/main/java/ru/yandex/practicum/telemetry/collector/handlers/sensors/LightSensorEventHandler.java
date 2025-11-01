@@ -1,6 +1,8 @@
 package ru.yandex.practicum.telemetry.collector.handlers.sensors;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.grpc.telemetry.event.LightSensorProto;
@@ -12,9 +14,10 @@ import ru.yandex.practicum.telemetry.collector.mappers.TimestampMapper;
 
 @Component
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LightSensorEventHandler implements SensorEventHandler {
-    private final String topic = "telemetry.sensors.v1";
-    private final KafkaClientProducer kafkaClientProducer;
+    String topic = "telemetry.sensors.v1";
+    KafkaClientProducer kafkaClientProducer;
 
     @Override
     public SensorEventProto.PayloadCase getMessageType() {

@@ -4,6 +4,8 @@ import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import net.devh.boot.grpc.server.service.GrpcService;
 import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
@@ -17,9 +19,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @GrpcService
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EventsController extends CollectorControllerGrpc.CollectorControllerImplBase {
-    private final Map<SensorEventProto.PayloadCase, SensorEventHandler> sensorEventHandlers;
-    private final Map<HubEventProto.PayloadCase, HubEventHandler> hubEventHandlers;
+    Map<SensorEventProto.PayloadCase, SensorEventHandler> sensorEventHandlers;
+    Map<HubEventProto.PayloadCase, HubEventHandler> hubEventHandlers;
 
     public EventsController(Set<SensorEventHandler> sensorEventHandlers, Set<HubEventHandler> hubEventHandlers) {
         this.sensorEventHandlers = sensorEventHandlers.stream()
@@ -71,5 +74,4 @@ public class EventsController extends CollectorControllerGrpc.CollectorControlle
             ));
         }
     }
-
 }

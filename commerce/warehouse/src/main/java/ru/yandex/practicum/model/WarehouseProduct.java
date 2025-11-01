@@ -1,33 +1,30 @@
 package ru.yandex.practicum.model;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import java.util.UUID;
 
-@Entity
-@Getter
-@Setter
-@ToString
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "warehouse_product")
 public class WarehouseProduct {
 
     @Id
-    private UUID productId;
+    UUID productId;
 
-    private double weight;
+    double weight;
 
-    private double width;
+    double width;
 
-    private double height;
+    double height;
 
-    private double depth;
+    double depth;
 
-    private boolean fragile;
+    boolean fragile;
 
-    private int quantity;
+    int quantity;
 }

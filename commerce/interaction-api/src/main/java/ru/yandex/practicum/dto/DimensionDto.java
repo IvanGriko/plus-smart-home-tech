@@ -1,21 +1,24 @@
 package ru.yandex.practicum.dto;
 
 import jakarta.validation.constraints.DecimalMin;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class DimensionDto {
 
     @DecimalMin(value = "1")
-    private double width;
+    double width;
 
     @DecimalMin(value = "1")
-    private double height;
+    double height;
 
     @DecimalMin(value = "1")
-    private double depth;
+    double depth;
 }
