@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static ru.yandex.practicum.mapper.ProductMapper.mapToProductDto;
-
 @Service
 @RequiredArgsConstructor
 public class ShoppingServiceImpl implements ShoppingService {
@@ -30,14 +28,14 @@ public class ShoppingServiceImpl implements ShoppingService {
     public ProductDto addProduct(ProductDto product) {
         Product productDb = productMapper.mapToProduct(product);
         productDb = productRepository.save(productDb);
-        return mapToProductDto(productDb);
+        return productMapper.mapToProductDto(productDb);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductDto findProductById(UUID id) {
         Product product = getProductFromStore(id);
-        return mapToProductDto(product);
+        return productMapper.mapToProductDto(product);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class ShoppingServiceImpl implements ShoppingService {
         getProductFromStore(product.getProductId());
         Product productUpdated = productMapper.mapToProduct(product);
         productUpdated = productRepository.save(productUpdated);
-        return mapToProductDto(productUpdated);
+        return productMapper.mapToProductDto(productUpdated);
     }
 
     @Override
@@ -100,7 +98,7 @@ public class ShoppingServiceImpl implements ShoppingService {
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Product> products = productRepository.findByProductCategory(category, pageable);
         List<ProductDto> productDtos = products.stream()
-                .map(ProductMapper::mapToProductDto)
+                .map(productMapper::mapToProductDto)
                 .toList();
         SearchResultDto result = new SearchResultDto();
         result.setContent(productDtos);
