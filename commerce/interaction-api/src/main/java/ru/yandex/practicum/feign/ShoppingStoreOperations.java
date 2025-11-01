@@ -21,7 +21,7 @@ public interface ShoppingStoreOperations {
             @RequestParam(value = "category", required = false) ProductCategory category,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "10") Integer size,
-            @RequestParam(value = "sort", required = false) String sortField
+            @RequestParam(value = "sort", required = false, defaultValue = "productName") String sortField
     );
 
     @PutMapping
