@@ -19,5 +19,5 @@ public interface ShoppingService {
 //    SearchResultDto findByProductCategory(ProductCategory category, Pageable params);
 
     @Transactional(readOnly = true)
-    SearchResultDto findByProductCategory(ProductCategory category, Integer page, Integer size, String sortString);
+    SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sortString);
 }

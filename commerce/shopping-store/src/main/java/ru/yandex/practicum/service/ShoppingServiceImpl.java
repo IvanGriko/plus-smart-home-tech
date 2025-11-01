@@ -92,7 +92,7 @@ public class ShoppingServiceImpl implements ShoppingService {
 
     @Override
     @Transactional(readOnly = true)
-    public SearchResultDto findByProductCategory(ProductCategory category, Integer page, Integer size, String sortString) {
+    public SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sortString) {
         List<SortDto> sortList = parseSortString(sortString);
         Sort sort = sortList.stream()
                 .map(s -> Sort.by(Sort.Direction.valueOf(s.getDirection()), s.getProperty()))

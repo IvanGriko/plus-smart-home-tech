@@ -34,7 +34,7 @@ public class ShoppingStoreController implements ShoppingStoreOperations {
 
     @Override
     public SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sort) {
-        return shoppingService.findByProductCategory(category, page, size, sort);
+        return shoppingService.searchProducts(category, page, size, sort);
     }
 
     @Override
