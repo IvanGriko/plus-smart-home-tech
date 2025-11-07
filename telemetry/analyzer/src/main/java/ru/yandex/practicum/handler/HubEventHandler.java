@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HubEventHandler {
@@ -56,6 +55,7 @@ public class HubEventHandler {
         }
     }
 
+    @Transactional
     private void handleDeviceAdded(String hubId, DeviceAddedEventAvro event) {
         log.info("Handle addition of device from hub ID: \"{}\"", hubId);
         String id = event.getId();
@@ -70,6 +70,7 @@ public class HubEventHandler {
         }
     }
 
+    @Transactional
     private void handleDeviceRemoved(String hubId, DeviceRemovedEventAvro event) {
         log.info("Handle removal of device from hub ID: \"{}\"", hubId);
         String id = event.getId();
@@ -77,6 +78,7 @@ public class HubEventHandler {
         log.info("Sensor with ID: \"{}\" deleted in hub ID: \"{}\"", id, hubId);
     }
 
+    @Transactional
     private void handleScenarioAdded(String hubId, ScenarioAddedEventAvro event) {
         log.info("Handle addition of scenario from hub ID: \"{}\"", hubId);
         Optional<Scenario> scenarioOpt = scenarioRepository.findByHubIdAndName(hubId, event.getName());
@@ -91,6 +93,7 @@ public class HubEventHandler {
         }
     }
 
+    @Transactional
     private void handleScenarioRemoved(String hubId, ScenarioRemovedEventAvro event) {
         log.info("Handle removal of scenario from hub ID: \"{}\"", hubId);
         String name = event.getName();
@@ -104,6 +107,7 @@ public class HubEventHandler {
         log.info("Scenario with name: \"{}\" deleted in hub ID: \"{}\"", name, hubId);
     }
 
+    @Transactional
     private void addScenario(String hubId, ScenarioAddedEventAvro event) throws RuntimeException {
         Scenario scenario = new Scenario();
         scenario.setHubId(hubId);
@@ -114,6 +118,7 @@ public class HubEventHandler {
         log.info("Scenario with name: \"{}\" added in hub ID: \"{}\"", scenario.getName(), hubId);
     }
 
+    @Transactional
     private void addAction(Scenario scenario, ScenarioAddedEventAvro event) throws RuntimeException {
         List<String> sensorIdlist = event.getActions().stream()
                 .map(DeviceActionAvro::getSensorId)
@@ -129,6 +134,7 @@ public class HubEventHandler {
         actionRepository.saveAll(actions);
     }
 
+    @Transactional
     private void addCondition(Scenario scenario, ScenarioAddedEventAvro event) throws RuntimeException {
         List<String> sensorIdlist = event.getConditions().stream()
                 .map(ScenarioConditionAvro::getSensorId)
@@ -181,6 +187,7 @@ public class HubEventHandler {
         }
     }
 
+    @Transactional
     private void updateScenario(Scenario scenario, ScenarioAddedEventAvro event) throws RuntimeException {
         actionRepository.deleteByScenario(scenario);
         conditionRepository.deleteByScenario(scenario);
