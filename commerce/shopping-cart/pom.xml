@@ -11,10 +11,6 @@
 
     <artifactId>shopping-cart</artifactId>
 
-    <properties>
-        <org.mapstruct.version>1.6.3</org.mapstruct.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>ru.yandex.practicum</groupId>
