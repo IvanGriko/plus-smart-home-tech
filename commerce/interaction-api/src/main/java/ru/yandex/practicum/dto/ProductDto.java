@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -36,5 +37,5 @@ public class ProductDto {
     ProductCategory productCategory;
 
     @NotNull
-    Double price;
+    BigDecimal price;
 }
