@@ -1,0 +1,52 @@
+package ru.yandex.practicum.controller;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.dto.*;
+import ru.yandex.practicum.feign.ShoppingStoreOperations;
+import ru.yandex.practicum.service.ShoppingService;
+
+import java.util.UUID;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(path = "/api/v1/shopping-store")
+public class ShoppingStoreController implements ShoppingStoreOperations {
+    private final ShoppingService shoppingService;
+
+    @Override
+    public SearchResultDto searchProducts(ProductCategory category, Integer page, Integer size, String sort) {
+        return shoppingService.searchProducts(category, page, size, sort);
+    }
+
+    @Override
+    public ProductDto addProduct(ProductDto product) {
+        return shoppingService.addProduct(product);
+    }
+
+    @Override
+    public ProductDto getProductById(UUID productId) {
+        return shoppingService.findProductById(productId);
+    }
+
+    @Override
+    public ProductDto updateProduct(ProductDto product) {
+        return shoppingService.updateProduct(product);
+    }
+
+    @Override
+    public boolean removeProduct(UUID productId) {
+        shoppingService.removeProductFromStore(productId);
+        return true;
+    }
+
+    @Override
+    public boolean updateProductQuantityState(UUID productId, String quantityState) {
+        QuantityState qs = QuantityState.valueOf(quantityState.toUpperCase());
+        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest(productId, qs);
+        shoppingService.setProductQuantityState(request);
+        return true;
+    }
+}

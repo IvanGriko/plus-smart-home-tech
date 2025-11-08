@@ -1,32 +1,77 @@
 package ru.yandex.practicum.telemetry.collector.controllers;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.yandex.practicum.telemetry.collector.models.HubEvent;
-import ru.yandex.practicum.telemetry.collector.models.SensorEvent;
-import ru.yandex.practicum.telemetry.collector.services.EventsService;
+import com.google.protobuf.Empty;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import net.devh.boot.grpc.server.service.GrpcService;
+import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
+import ru.yandex.practicum.telemetry.collector.handlers.hubs.HubEventHandler;
+import ru.yandex.practicum.telemetry.collector.handlers.sensors.SensorEventHandler;
 
-@RestController
-@RequestMapping("/events")
-@RequiredArgsConstructor
-@Slf4j
-public class EventsController {
-    private final EventsService eventsService;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-    @PostMapping("/sensors")
-    public void sensors(@Valid @RequestBody SensorEvent event) {
-        log.info("Request with sensor event: {}", event);
-        eventsService.publishToSensors(event);
+@GrpcService
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class EventsController extends CollectorControllerGrpc.CollectorControllerImplBase {
+    Map<SensorEventProto.PayloadCase, SensorEventHandler> sensorEventHandlers;
+    Map<HubEventProto.PayloadCase, HubEventHandler> hubEventHandlers;
+
+    public EventsController(Set<SensorEventHandler> sensorEventHandlers, Set<HubEventHandler> hubEventHandlers) {
+        this.sensorEventHandlers = sensorEventHandlers.stream()
+                .collect(Collectors.toMap(
+                        SensorEventHandler::getMessageType,
+                        Function.identity()
+                ));
+        this.hubEventHandlers = hubEventHandlers.stream()
+                .collect(Collectors.toMap(
+                        HubEventHandler::getMessageType,
+                        Function.identity()
+                ));
     }
 
-    @PostMapping("/hubs")
-    public void hubs(@Valid @RequestBody HubEvent event) {
-        log.info("Request with hub event: {}", event);
-        eventsService.publishToHubs(event);
+    @Override
+    public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            if (sensorEventHandlers.containsKey(request.getPayloadCase())) {
+                sensorEventHandlers.get(request.getPayloadCase()).handle(request);
+            } else {
+                throw new IllegalArgumentException("Не могу найти обработчик для события " + request.getPayloadCase());
+            }
+            responseObserver.onNext(Empty.getDefaultInstance());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(new StatusRuntimeException(
+                    Status.INTERNAL
+                            .withDescription(e.getLocalizedMessage())
+                            .withCause(e)
+            ));
+        }
+    }
+
+    @Override
+    public void collectHubEvent(HubEventProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            if (hubEventHandlers.containsKey(request.getPayloadCase())) {
+                hubEventHandlers.get(request.getPayloadCase()).handle(request);
+            } else {
+                throw new IllegalArgumentException("Не могу найти обработчик для события " + request.getPayloadCase());
+            }
+            responseObserver.onNext(Empty.getDefaultInstance());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(new StatusRuntimeException(
+                    Status.INTERNAL
+                            .withDescription(e.getLocalizedMessage())
+                            .withCause(e)
+            ));
+        }
     }
 }
