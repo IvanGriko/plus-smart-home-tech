@@ -8,7 +8,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@EnableFeignClients
 @EnableDiscoveryClient
 public class Warehouse {
     public static void main(String[] args) {
